@@ -5,16 +5,29 @@ using UnityEngine;
 public class PlaryerController : MonoBehaviour
 {
     private Rigidbody playerRb;
+    public float jumpforce = 10;
+    public float gravityModifier;
+    public bool isOnGround;
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
-        playerRb.AddForce(Vector3.up * 1000);
+        Physics.gravity *= gravityModifier;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        {
+            playerRb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            isOnGround = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        isOnGround = true;
     }
 }
